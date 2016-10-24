@@ -1,0 +1,2 @@
+node Kore/make
+PAUSE
