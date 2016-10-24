@@ -22,11 +22,9 @@ namespace {
 		#endif
 
 		int got = conn->receive(buff);
-
-		if (got > 0) {
+		while (got > 0) {
 			#ifdef ECHO_TEST
 			buff[got] = '!';
-			const unsigned char data[] = "ping";
 			conn->send(buff, got + 1);
 			#endif
 
