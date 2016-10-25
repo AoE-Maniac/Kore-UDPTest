@@ -21,8 +21,8 @@ namespace {
 		conn->send(data, 4);
 		#endif
 
-		int got = conn->receive(buff);
-		while (got > 0) {
+		int got;
+		while ((got = conn->receive(buff)) > 0) {
 			#ifdef ECHO_TEST
 			buff[got] = '!';
 			conn->send(buff, got + 1);
