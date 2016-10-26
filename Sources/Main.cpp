@@ -31,6 +31,7 @@ namespace {
 			buff[got] = '\0';
 			log(LogLevel::Info, "Received %i bytes: %s", got, buff);
 		}
+		log(LogLevel::Info, "Connection state is %i", conn->state);
 	}
 }
 
