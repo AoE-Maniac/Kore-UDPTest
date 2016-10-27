@@ -17,8 +17,8 @@ namespace {
 
 	void update() {
 		#ifndef ECHO_TEST
-		const unsigned char data[] = "ping";
-		conn->send(data, 4);
+		//const unsigned char data[] = "ping";
+		//conn->send(data, 4);
 		#endif
 
 		int got;
@@ -31,7 +31,7 @@ namespace {
 			buff[got] = '\0';
 			log(LogLevel::Info, "Received %i bytes: %s", got, buff);
 		}
-		log(LogLevel::Info, "Connection state is %i", conn->state);
+		log(LogLevel::Info, "[%f] Connection state is %i (ping = %f)", System::time(), conn->state, conn->ping);
 	}
 }
 
