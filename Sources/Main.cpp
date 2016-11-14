@@ -11,6 +11,9 @@ using namespace Kore;
 namespace {
 	const int port = 7734;
 	const char* url = "localhost";
+	
+	double lastTime = 0;
+	int count = 0;
 
 	Connection *conn;
 	unsigned char buff[256];
@@ -19,6 +22,14 @@ namespace {
 		#ifndef ECHO_TEST
 		//const unsigned char data[] = "ping";
 		//conn->send(data, 4);
+		if (System::time() - lastTime > 1) {
+			unsigned char data[4];
+			*((int*)data) = count;
+			conn->send(data, 4);
+
+			++count;
+			lastTime = System::time();
+		}
 		#endif
 
 		int got;
@@ -28,10 +39,11 @@ namespace {
 			conn->send(buff, got + 1);
 			#endif
 
-			buff[got] = '\0';
-			log(LogLevel::Info, "Received %i bytes: %s", got, buff);
+			log(LogLevel::Info, "Received %i bytes: %i", got, *(int*)buff);
+			//buff[got] = '\0';
+			//log(LogLevel::Info, "Received %i bytes: %s", got, buff);
 		}
-		log(LogLevel::Info, "[%f] Connection state is %i (ping = %f)", System::time(), conn->state, conn->ping);
+		//log(LogLevel::Info, "[%f] Connection state is %i (ping = %f)", System::time(), conn->state, conn->ping);
 	}
 }
 
