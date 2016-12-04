@@ -35,11 +35,12 @@ namespace {
 		int got;
 		while ((got = conn->receive(buff)) > 0) {
 			#ifdef ECHO_TEST
-			buff[got] = '!';
-			conn->send(buff, got + 1);
+			//buff[got] = '!';
+			//conn->send(buff, got + 1);
+			conn->send(buff, got);
 			#endif
 
-			log(LogLevel::Info, "Received %i bytes: %i", got, *(int*)buff);
+			log(LogLevel::Info, "Received %i bytes: %i (ping = %f)", got, *(int*)buff, conn->ping);
 			//buff[got] = '\0';
 			//log(LogLevel::Info, "Received %i bytes: %s", got, buff);
 		}
