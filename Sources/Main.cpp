@@ -33,14 +33,15 @@ namespace {
 		#endif
 
 		int got;
-		while ((got = conn->receive(buff)) > 0) {
+		int id;
+		while ((got = conn->receive(buff, id)) > 0) {
 			#ifdef ECHO_TEST
 			//buff[got] = '!';
 			//conn->send(buff, got + 1);
 			conn->send(buff, got);
 			#endif
 
-			log(LogLevel::Info, "Received %i bytes: %i (ping = %f)", got, *(int*)buff, conn->ping);
+			log(LogLevel::Info, "Received %i bytes: %i (ping = %f)", got, *(int*)buff, conn->pings[id]);
 			//buff[got] = '\0';
 			//log(LogLevel::Info, "Received %i bytes: %s", got, buff);
 		}
@@ -68,9 +69,11 @@ int kore(int argc, char** argv) {
 	Kore::System::initWindow(options);
 
 	#ifdef ECHO_TEST
-	conn = new Connection(url, port + 1, port);
+	conn = new Connection(port, 2);
+	conn->listen();
 	#else
-	conn = new Connection(url, port, port + 1);
+	conn = new Connection(port + 1, 1);
+	conn->connect(url, port);
 	#endif
 
 	Kore::System::setCallback(update);
